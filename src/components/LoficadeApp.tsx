@@ -104,6 +104,7 @@ export default function LoficadeApp() {
             <input
               value={name}
               maxLength={18}
+              onFocus={(e) => e.currentTarget.select()}
               onChange={(e) => {
                 const next = e.target.value;
                 setName(next);

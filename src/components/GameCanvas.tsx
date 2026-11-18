@@ -179,7 +179,7 @@ export default function GameCanvas({ onRunEnd }: Props) {
     const resize = () => {
       const parent = canvas.parentElement;
       const w = Math.min(420, parent?.clientWidth || 420);
-      const h = Math.round(w * 1.35);
+      const h = Math.round(Math.min(560, w * 1.2));
       const wasRunning = stateRef.current?.running;
       canvas.width = w;
       canvas.height = h;
