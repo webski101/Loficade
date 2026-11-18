@@ -45,15 +45,15 @@ body {
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: min(72vh, 640px);
+  min-height: min(42vh, 360px);
   display: grid;
   align-items: end;
   border-radius: 0;
-  margin: -1.25rem -1.1rem 1.5rem;
-  padding: 2rem 1.25rem 2.4rem;
+  margin: -1.25rem -1.1rem 1.15rem;
+  padding: 1.5rem 1.25rem 1.6rem;
   background:
-    linear-gradient(180deg, rgba(4, 16, 24, 0.15) 0%, rgba(4, 16, 24, 0.78) 70%, var(--glacier) 100%),
-    url("/lofi-scene.jpg") center / cover no-repeat;
+    linear-gradient(180deg, rgba(4, 16, 24, 0.12) 0%, rgba(4, 16, 24, 0.72) 62%, var(--glacier) 100%),
+    url("/lofi-scene.jpg") center 35% / cover no-repeat;
   animation: hero-in 0.9s ease-out both;
 }
 
@@ -180,6 +180,7 @@ body {
 }
 
 .canvas-wrap {
+  position: relative;
   touch-action: none;
   border-radius: 22px;
   overflow: hidden;
@@ -193,6 +194,32 @@ body {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.canvas-start {
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7ad8f5, #2aa8c8);
+  color: #062033;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.canvas-start:hover {
+  background: linear-gradient(135deg, #9ae4ff, #3bb8d6);
+}
+
+.game-actions.top {
+  margin-bottom: 0.15rem;
 }
 
 .game-message {
@@ -416,7 +443,7 @@ body {
   }
 
   .hero {
-    min-height: 58vh;
+    min-height: 34vh;
   }
 
   .brand {

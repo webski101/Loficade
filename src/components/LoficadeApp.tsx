@@ -35,13 +35,22 @@ export default function LoficadeApp() {
     const saved = window.localStorage.getItem(NAME_KEY);
     if (saved) setName(saved);
 
-    fetch("/api/scores")
-      .then((res) => res.json())
-      .then((data) => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/scores", { cache: "no-store" });
+        const data = await res.json();
+        if (cancelled) return;
         setScores(data.scores || []);
         if (data.well) setWell(data.well);
-      })
-      .catch(() => setStatus("Could not load today’s board."));
+      } catch {
+        if (!cancelled) setStatus("Could not load today’s board.");
+      }
+    };
+    void load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const onRunEnd = useCallback(
@@ -53,6 +62,7 @@ export default function LoficadeApp() {
         const res = await fetch("/api/scores", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          cache: "no-store",
           body: JSON.stringify({
             name,
             score: result.score,
@@ -82,8 +92,7 @@ export default function LoficadeApp() {
           <p className="brand">Loficade</p>
           <h1>Drill the deep well.</h1>
           <p className="lede">
-            Guide Lofi through today’s ice shaft. Catch meltwater, dodge rock and
-            plastic, and feed the Flurry’s community well.
+            Catch meltwater, dodge ice hazards, and fill the Flurry community well.
           </p>
         </div>
       </header>

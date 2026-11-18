@@ -179,7 +179,7 @@ export default function GameCanvas({ onRunEnd }: Props) {
     const resize = () => {
       const parent = canvas.parentElement;
       const w = Math.min(420, parent?.clientWidth || 420);
-      const h = Math.round(w * 1.55);
+      const h = Math.round(w * 1.35);
       const wasRunning = stateRef.current?.running;
       canvas.width = w;
       canvas.height = h;
@@ -319,6 +319,36 @@ export default function GameCanvas({ onRunEnd }: Props) {
         </div>
       </div>
 
+      <div className="game-actions top">
+        {!hud.running ? (
+          <button
+            type="button"
+            className="cta primary"
+            data-testid="start-drill"
+            onClick={begin}
+          >
+            {hud.ended ? "Drill again" : "Start drilling"}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="cta ghost"
+            data-testid="end-drill"
+            onClick={() => {
+              const state = stateRef.current;
+              if (!state || state.ended) return;
+              const result = endGame(state, "You pulled the drill.");
+              onRunEndRef.current(result);
+            }}
+          >
+            End run
+          </button>
+        )}
+        <p className="hint">← → or A/D · tap left/right on the shaft</p>
+      </div>
+
+      <p className="game-message">{hud.message}</p>
+
       <div
         className="canvas-wrap"
         onPointerDown={(e) => pointerSteer(e.clientX)}
@@ -335,30 +365,16 @@ export default function GameCanvas({ onRunEnd }: Props) {
         }}
       >
         <canvas ref={canvasRef} aria-label="Loficade drill game" />
-      </div>
-
-      <p className="game-message">{hud.message}</p>
-
-      <div className="game-actions">
         {!hud.running ? (
-          <button type="button" className="cta primary" onClick={begin}>
-            {hud.ended ? "Drill again" : "Start drilling"}
-          </button>
-        ) : (
           <button
             type="button"
-            className="cta ghost"
-            onClick={() => {
-              const state = stateRef.current;
-              if (!state || state.ended) return;
-              const result = endGame(state, "You pulled the drill.");
-              onRunEndRef.current(result);
-            }}
+            className="canvas-start"
+            data-testid="start-drill-overlay"
+            onClick={begin}
           >
-            End run
+            {hud.ended ? "Drill again" : "Start drilling"}
           </button>
-        )}
-        <p className="hint">← → or A/D · tap left/right on mobile</p>
+        ) : null}
       </div>
     </div>
   );
